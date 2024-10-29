@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+tensorflow
+numpy
+streamlit
+mediapipe
