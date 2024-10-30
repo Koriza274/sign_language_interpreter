@@ -5,7 +5,8 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-model_path = "/app/basic_models/asl_sign_language_model.keras"
+# model_path = "/app/basic_models/asl_sign_language_model.keras"
+model_path = "/app/basic_models/asl_sign_language_model_tf_2.18.keras"
 model = load_model(model_path)
 
 class PredictionRequest(BaseModel):
