@@ -41,14 +41,14 @@ def normalize_landmarks(landmarks):
 
     return normalized_landmarks
 
-def predict_asl_letter(image):
+def predict_asl_letter(image_in):
     """
     Predict the American Sign Language (ASL) letter from an image.
     """
-
+    image = cv2.cvtColor(np.array(image_in), cv2.COLOR_RGB2BGR)
     # Initialize MediaPipe Hands
     mp_hands = mp.solutions.hands
-    hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.1)
+    hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.3)
     # Load the model from the keras file
     model_path = os.path.join(ROOT_PATH, 'models', 'production_model', 'asl_sign_language_model.keras')
     label_path = os.path.join(ROOT_PATH, 'models', 'production_model', 'label_classes_large.npy')
@@ -61,9 +61,16 @@ def predict_asl_letter(image):
     if not np.array_equal(image[0, 0], cv2.cvtColor(image, cv2.COLOR_BGR2RGB)[0, 0]):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    image = adjust_brightness_contrast(image, brightness=20, contrast=1.0)
+    brightness_values = range(-60, 60, 5)  # e.g., from -50 to 50 in steps of 20
+    #contrast_values = [1.0, 0.5, 0.75, 1.25, 1.5]
+    landmarks_found = False
+    for brightness in brightness_values:
+        image_adjusted = adjust_brightness_contrast(image, brightness=brightness, contrast=1.0)
+        results = hands.process(image_adjusted)
+        if results.multi_hand_landmarks:
+            landmarks_found = True
+            break
 
-    results = hands.process(image)
     if results.multi_hand_landmarks:
         landmarks = []
         wrist = results.multi_hand_landmarks[0].landmark[0]
@@ -91,7 +98,8 @@ def predict_asl_letter(image):
 
 if __name__ == '__main__':
     #image = cv2.imread("../raw_data/test_set_pics/C/test_C_3.jpg")
-    image = cv2.imread("../raw_data/asl_alphabet_dataset/asl_alphabet_test/C_test.jpg")
+    #image = cv2.imread("../raw_data/asl_alphabet_dataset/asl_alphabet_test/C_test.jpg")
+    image = cv2.imread("../raw_data/L_cropped.jpg")
     label, confidence = predict_asl_letter(image)
     if label:
         print(f"Predicted ASL Letter: {label} with {confidence:.2f}% confidence")

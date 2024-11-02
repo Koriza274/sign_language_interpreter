@@ -1,5 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import numpy as np
+from PIL import Image
+import io
 import cv2
 from package_folder.sign_interpreter import predict_asl_letter
 
@@ -17,7 +19,8 @@ async def predict(file: UploadFile = File(...)):
     # Read the uploaded file and process it as an image
     try:
         image_data = await file.read()
-        image = cv2.imdecode(np.frombuffer(image_data, np.uint8), cv2.IMREAD_COLOR)
+        #image = cv2.imdecode(np.frombuffer(image_data, np.uint8), cv2.IMREAD_COLOR)
+        image = Image.open(io.BytesIO(image_data))
 
         if image is None:
             raise ValueError("Invalid image format")
