@@ -86,3 +86,6 @@ if camera_image or uploaded_file:
             st.write(f"Confidence: {prediction['confidence']:.2f}")
     else:
         st.write("No hand detected in the image.")
+
+# Free up memory manually
+gc.collect()
