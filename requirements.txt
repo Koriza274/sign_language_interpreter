@@ -1,4 +1,4 @@
-opencv-python==4.10.0.84
+opencv-python
 mediapipe==0.10.10
 numpy==1.26.4
 tensorflow==2.18.0
@@ -10,4 +10,5 @@ pillow==10.4.0
 requests==2.32.3
 uvicorn==0.32.0
 python-multipart==0.0.16
-
+python-dotenv
+streamlit-webrtc

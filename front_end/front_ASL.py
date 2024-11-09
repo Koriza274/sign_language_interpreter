@@ -2,37 +2,101 @@ import streamlit as st
 import cv2 as cv
 import mediapipe as mp
 import numpy as np
+import time
 from PIL import Image
 import requests
 import copy
 import os
 import io
-#from streamlit_webrtc import webrtc_streamer
+import time
+from dotenv import load_dotenv
+from params import *
+from streamlit_webrtc import webrtc_streamer
+from front_ASL_layout import display_image_columns
 
-API_URL = "https://dmapi-564221756825.europe-west1.run.app"
 
-def get_predictions(uploaded_file):
+load_dotenv()
+api_url = st.secrets["API_URL"]
+
+#API_URL = "https://dmapi-564221756825.europe-west1.run.app"
+
+st.sidebar.title("Project Information")
+st.sidebar.write("""
+**Project Name**: Sign Language Recognition
+
+**Goal**: Develop a model to recognize sign language using computer vision and machine learning techniques.
+
+**Course**: LeWagon #1705 (Diana, Robert, Jean-Michel, Gabriel & Boris).
+
+**Technologies Used**:
+- Python for scripting and data processing
+- Mediapipe and OpenCV for image processing and hand landmark detection
+- TensorFlow for machine learning model development
+- Streamlit for the web interface
+""")
+LAST_CLEAR_TIME = 0  # Keep track of the last time the cache was cleared
+CACHE_CLEAR_INTERVAL = 60  # Interval in seconds (clear cache every 120 seconds)
+
+def should_clear_cache():
+    global LAST_CLEAR_TIME
+    current_time = time.time()
+    if current_time - LAST_CLEAR_TIME > CACHE_CLEAR_INTERVAL:
+        LAST_CLEAR_TIME = current_time
+        return True
+    return False
+
+
+
+
+def get_predictions_with_progress(uploaded_file):
+
+    if should_clear_cache():
+        st.cache_data.clear()
+        #st.info("Cache cleared periodically.")
+
+
+    # Initialize progress bar at 0%
+    progress_bar = st.progress(0)
 
     # Prepare image data for API
     if isinstance(uploaded_file, np.ndarray):
         # Convert the numpy array directly to a PIL image
-        image = Image.fromarray(hand_region)
+        image = Image.fromarray(uploaded_file)
     else:
         # If it's a file-like object, use Image.open
-        image = Image.open(hand_region)    #image  = Image.open(uploaded_file)
+        image = Image.open(uploaded_file)
 
+    # Convert the image to a bytes object to send over the API
     image_data = io.BytesIO()
-    image.save(image_data,format = 'PNG')  # Save the image in the desired format
-    #display image to besent to model (for debugging purposes)
-    #st.image(image_data)
-    image_data.seek(0)  # Rewind the buffer
+    image.save(image_data, format='PNG')  # Save the image in PNG format
+    image_data.seek(0)  # Rewind the buffer to the start
 
-    url = f"{API_URL}/upload"
+    # Set up the API URL and prepare files for the request
+    url = f"{api_url}/upload"
     files = {'file': image_data}
+
+    # Update progress bar to 10% after image preparation
+    progress_bar.progress(10)
+
+    # Send the request to the API and wait for the response
     response = requests.post(url, files=files)
-    #st.write(response.json())
-    return response.json()['message']
-    #return None
+
+    # Simulate loading progress in increments, to show the API processing
+    for i in range(20, 100, 20):  # Increment progress in steps of 20%
+        time.sleep(0.1)  # Short delay to simulate loading time
+        progress_bar.progress(i)
+
+    # Retrieve and return the prediction from the API response
+    predictions = response.json()['message']
+    confidence = response.json()['confidence']
+
+    # Set progress to 100% once loading is complete
+    progress_bar.progress(100)
+
+    # Clear the progress bar from the screen
+    progress_bar.empty()
+
+    return predictions, confidence
 
 def calc_bounding_rect(image, landmarks):
 
@@ -74,6 +138,8 @@ def extract_hand(source_image):
 
     image = cv.imread(temp_path)
     debug_image = copy.deepcopy(image)
+
+    image = cv.flip(image, 1)
 
     image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
 
@@ -136,24 +202,16 @@ if uploaded_file is not None:
 
     processed_image, hand_region = extract_hand(uploaded_file)
 
-
 if hand_region is not None:
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.image(processed_image, caption="Original", use_column_width=True)
-
-    with col2:
-        st.image(hand_region, caption="Hand region")
-#        st.write(type(hand_region))
-
-    with col3:
-        predictions = get_predictions(hand_region)
-        st.write("Prediction:")
-        st.markdown(
-            f"<p style='font-size:140px; font-weight:bold;'>{predictions[-1]}</p>",
-            unsafe_allow_html=True
-            )
+    prediction, confidence = get_predictions_with_progress(hand_region)
+    display_image_columns(processed_image, hand_region, (prediction, confidence))
 else:
     st.write("No hand detected in the image.")
+
+
+
+def display_url():
+    print(api_url)
+
+if __name__  == '__main__':
+    display_url()
