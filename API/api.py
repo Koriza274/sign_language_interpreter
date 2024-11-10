@@ -12,7 +12,7 @@ app = FastAPI()
 # Root endpoint
 @app.get("/")
 def root():
-    return {'greeting': "Ready for ASL letter prediction!"}
+    return {'greeting': "Ready for ASL letter prediction!!"}
 
 # Prediction endpoint
 @app.post("/upload")
