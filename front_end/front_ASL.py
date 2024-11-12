@@ -1,25 +1,25 @@
 import streamlit as st
-import cv2 as cv
-import mediapipe as mp
+#import cv2 as cv
+#import mediapipe as mp
 import numpy as np
 import time
 from PIL import Image
 import requests
-import copy
-import os
+#import copy
+#import os
 import io
 import time
 from io import BytesIO
 import base64
 from dotenv import load_dotenv
-from params import *
-from streamlit_webrtc import webrtc_streamer
+#from params import *
+#from streamlit_webrtc import webrtc_streamer
 from front_ASL_layout import display_image_columns
 
 
 load_dotenv()
-api_url = st.secrets["API_URL"]
-#api_url = API_URL
+#api_url = st.secrets["API_URL"]
+api_url = "https://my-api-app-3-564221756825.us-central1.run.app"
 
 
 st.sidebar.title("Project Information")
@@ -123,11 +123,11 @@ st.title("Show hands!")
 st.write('Take a picture with the computer camera, or upload a file.')
 
 # Initialize MediaPipe hands model
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=True,
-                       max_num_hands=2,
-                       min_detection_confidence=0.5,
-                       min_tracking_confidence=0.5)
+#mp_hands = mp.solutions.hands
+#hands = mp_hands.Hands(static_image_mode=True,
+                       #max_num_hands=2,
+                       #min_detection_confidence=0.5,
+                       #min_tracking_confidence=0.5)
 
 
 camera_image = st.camera_input("Take a picture")

@@ -14,7 +14,8 @@ app = FastAPI()
 def image_to_base64(image: np.ndarray) -> str:
     if isinstance(image, np.ndarray):
         # If it's a numpy array, convert it to a PIL Image (RGB format)
-        image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        #image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        image = Image.fromarray(image)
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
