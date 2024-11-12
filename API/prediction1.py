@@ -53,8 +53,8 @@ def predict_asl_letter(image_in):
     hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.3)
     # Load the model from the keras file
 
-    model_path = os.path.join(ROOT_PATH,"API", 'models','asl_new_model.keras')
-    label_path = os.path.join(ROOT_PATH,"API", 'models', 'labels_v_large.npy')
+    model_path = os.path.join(ROOT_PATH,"API", 'models','asl_sign_language_model.keras')
+    label_path = os.path.join(ROOT_PATH,"API", 'models', 'label_classes_large.npy')
 
     model = tf.keras.models.load_model(model_path)
     label_encoder = LabelEncoder()
