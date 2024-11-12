@@ -20,4 +20,4 @@ RUN pip install -r requirements.txt
 COPY API API
 
 
-CMD uvicorn API.api:app --host 0.0.0.0 --port $PORT
+CMD uvicorn API.api1:app --host 0.0.0.0 --port $PORT

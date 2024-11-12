@@ -2,3 +2,4 @@ raw_data/
 temp_dir
 .python-version
 .DS_Store
+.env
