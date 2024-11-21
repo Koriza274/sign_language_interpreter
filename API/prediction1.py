@@ -101,6 +101,11 @@ def predict_asl_letter(image_in):
                 predicted_label = 'R'
             else:
                 predicted_label = 'U'
+        if predicted_label =='M':
+            if abs(lms[43])<abs(lms[13]):
+                predicted_label = 'N'
+            else:
+                predicted_label = 'M'
 
         return predicted_label, confidence
     else:
