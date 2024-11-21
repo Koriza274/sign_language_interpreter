@@ -47,10 +47,12 @@ def predict_asl_letter(image_in):
     Predict the American Sign Language (ASL) letter from an image.
     """
     img = cv2.imread(image_in)
+    img = cv2.flip(img, 1)
     image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
     # Initialize MediaPipe Hands
     mp_hands = mp.solutions.hands
-    hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.3)
+    hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.4,
+                       min_tracking_confidence=0.4)
     # Load the model from the keras file
 
     model_path = os.path.join(ROOT_PATH,"API", 'models','asl_sign_language_model.keras')
@@ -88,11 +90,17 @@ def predict_asl_letter(image_in):
         #normalized_landmarks = normalize_landmarks(landmarks)
 
         # Normalize and reshape the landmarks for model input
+        lms = np.array(landmarks)
         landmarks = np.array(landmarks).reshape(1, -1, 1)
         prediction = model.predict(landmarks)
         predicted_label_index = np.argmax(prediction)
         predicted_label = label_encoder.inverse_transform([predicted_label_index])[0]
         confidence = prediction[0][predicted_label_index] * 100
+        if predicted_label =='U':
+            if abs(lms[24])<abs(lms[36]):
+                predicted_label = 'R'
+            else:
+                predicted_label = 'U'
 
         return predicted_label, confidence
     else:
