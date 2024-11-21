@@ -51,8 +51,8 @@ def predict_asl_letter(image_in):
     image = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
     # Initialize MediaPipe Hands
     mp_hands = mp.solutions.hands
-    hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.4,
-                       min_tracking_confidence=0.4)
+    hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.3,
+                       )
     # Load the model from the keras file
 
     model_path = os.path.join(ROOT_PATH,"API", 'models','asl_sign_language_model.keras')
@@ -137,10 +137,10 @@ def draw_bounding_rect(use_brect, image, brect):
 
 def extract_hand(path):
     mp_hands = mp.solutions.hands
-    hands = mp_hands.Hands(static_image_mode=True,
-                       max_num_hands=2,
-                       min_detection_confidence=0.5,
-                       min_tracking_confidence=0.5)
+    hands = mp_hands.Hands(static_image_mode=False,
+                       max_num_hands=1,
+                       min_detection_confidence=0.3,
+                       min_tracking_confidence=0.3)
     mp_drawing = mp.solutions.drawing_utils
 
     image = cv2.imread(path)
