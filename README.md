@@ -2,6 +2,8 @@
 
 This project is the final project of the Data Science course by LeWagon, Batch 1705 (Diana, Robert, Jean-Michel, Gabriel & Boris). It aims to recognize sign language gestures, focusing on American Sign Language (ASL). The model uses machine learning libraries such as TensorFlow and OpenCV to detect and classify hand gestures and letters, which are then processed through a web interface powered by FastAPI and Streamlit.
 
+This is the back-end repo. See the front-end repo [here](https://github.com/Koriza274/sign_language_interpreter_front-end). This readme file covers the whole project.
+
 ## Table of Contents
 
 1. [Features](#features)
@@ -115,4 +117,3 @@ This will expose the FastAPI backend on port 8000. To access the Streamlit inter
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
-

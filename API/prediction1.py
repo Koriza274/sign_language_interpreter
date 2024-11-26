@@ -96,6 +96,9 @@ def predict_asl_letter(image_in):
         predicted_label_index = np.argmax(prediction)
         predicted_label = label_encoder.inverse_transform([predicted_label_index])[0]
         confidence = prediction[0][predicted_label_index] * 100
+
+
+        #Manual prediction for several letters using specific landmarks:
         if predicted_label =='U':
             if abs(lms[24])<abs(lms[36]):
                 predicted_label = 'R'
