@@ -87,7 +87,7 @@ uvicorn api:app --reload
 Run the Streamlit app to launch the web-based interface.
 
 ```bash
-streamlit run front_ASL.py
+streamlit run front_ASL_1.py
 ```
 
 #### 3. Configuration
