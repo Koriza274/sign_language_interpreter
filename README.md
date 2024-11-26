@@ -41,9 +41,14 @@ Alternatively, you can use the make install command to install all the necessary
 ### Installation
 
 #### 1. Clone the Repository
-
+For back-end:
 ```bash
 git clone https://github.com/Koriza274/sign_language_interpreter.git
+cd sign_language_interpreter
+```
+For front-end:
+```bash
+git clone https://github.com/Koriza274/sign_language_interpreter_front-end.git
 cd sign_language_interpreter
 ```
 
@@ -55,7 +60,6 @@ Use the provided `requirements.txt` to install necessary Python packages.
 make install
 ```
 
-*Alternatively, if issues arise with version compatibility, try using `requirements_1.txt`.*
 
 #### 3. System Dependencies
 
