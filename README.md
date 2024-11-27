@@ -94,7 +94,7 @@ streamlit run front_ASL_1.py
 
 #### 3. Configuration
 
-The application uses environment variables. You may configure these in a `.env` file. Refer to `params.py` for possible parameters that may be required.
+The application uses environment variables. You may configure these in a `.env` file. 
 
 ---
 
@@ -120,6 +120,6 @@ This will expose the FastAPI backend on port 8000. To access the Streamlit inter
 
 ### License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. 
 
 ---
