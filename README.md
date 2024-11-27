@@ -4,6 +4,8 @@ This project is the final project of the Data Science course by LeWagon, Batch 1
 
 This is the back-end repo. See the front-end repo [here](https://github.com/Koriza274/sign_language_interpreter_front-end). This readme file covers the whole project.
 
+The repo for word recognition is [here](https://github.com/Koriza274/asl_words_interpreter).
+
 ## Table of Contents
 
 1. [Features](#features)
