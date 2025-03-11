@@ -5,7 +5,7 @@ import copy
 import tensorflow as tf
 import mediapipe as mp
 from sklearn.preprocessing import LabelEncoder
-#check
+
 ROOT_PATH = os.path.dirname(os.path.dirname(__file__))
 
 def adjust_brightness_contrast(image, brightness=40, contrast=1.0):
